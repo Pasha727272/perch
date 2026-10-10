@@ -1,73 +1,82 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { CopyableCa } from './CopyableCa'
 import { ConnectModal } from './ConnectModal'
 import { useWallet } from '../wallet/WalletProvider'
 
-type NavItem = { to: string; label: string; end?: boolean; badge?: string }
+type NavItem = { to: string; label: string; end?: boolean; accent?: boolean }
 
-const actionLinks: NavItem[] = [
-  { to: '/', label: 'Home', end: true },
+const leftLinks: NavItem[] = [
+  { to: '/nest', label: 'Nest' },
+  { to: '/perch', label: 'The Perch', accent: true },
+]
+
+const rightLinks: NavItem[] = [
   { to: '/feed', label: 'Feed' },
-  { to: '/traders', label: 'Traders' },
-  { to: '/hunt', label: 'The Hunt', badge: 'New' },
-  { to: '/treasury', label: 'Treasury' },
-  { to: '/referrals', label: 'Referrals' },
+  { to: '/flock', label: 'Flock' },
 ]
 
-const explainLinks: NavItem[] = [
-  { to: '/structure', label: 'Structure' },
-  { to: '/listings', label: 'Listings' },
-  { to: '/roadmap', label: 'Roadmap' },
-]
-
-function linkClass({ isActive }: { isActive: boolean }) {
-  return `btn-lift text-sm font-semibold whitespace-nowrap transition-colors ${
-    isActive ? 'text-black underline underline-offset-4' : 'text-black/80 hover:text-black'
+function notchLinkClass({ isActive }: { isActive: boolean }) {
+  return `justify-self-center text-center text-[11px] font-semibold uppercase tracking-[0.12em] whitespace-nowrap text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)] transition-opacity ${
+    isActive ? 'opacity-100' : 'opacity-80 hover:opacity-100'
   }`
 }
 
 export function Chrome() {
-  const { short, walletId, connecting, openConnect, disconnect, error } = useWallet()
+  const { short, walletId, connecting, openConnect, disconnect } = useWallet()
+  const { pathname } = useLocation()
+  const isHome = pathname === '/'
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-hood-deep/10 bg-hood">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 lg:px-6">
-          <Link to="/" className="btn-lift flex shrink-0 items-center gap-2.5">
-            <img
-              src="/prey-logo.png"
-              alt="Prey"
-              className="h-11 w-11 object-contain"
+      <header className="fixed inset-x-0 top-0 z-50 bg-transparent">
+        <div className="mx-auto grid h-[96px] max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 sm:px-6">
+          <div aria-hidden />
+
+          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-[#0a100a]/28 shadow-[0_8px_28px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:w-max sm:gap-5 sm:px-6">
+            {leftLinks.map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                end={l.end}
+                className={({ isActive }) =>
+                  `hidden sm:inline ${notchLinkClass({ isActive })} ${l.accent ? '!text-ember' : ''}`
+                }
+              >
+                {l.label}
+              </NavLink>
+            ))}
+
+            <Link
+              to="/"
+              className="flex h-7 w-7 shrink-0 items-center justify-center"
+              aria-label="PERCH home"
+            >
+              <img src="/perch-logo.png" alt="PERCH" className="h-7 w-7 object-contain" />
+            </Link>
+
+            {rightLinks.map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                className={({ isActive }) =>
+                  `hidden sm:inline ${notchLinkClass({ isActive })} ${l.accent ? '!text-ember' : ''}`
+                }
+              >
+                {l.label}
+              </NavLink>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-end gap-2 pr-1 sm:gap-2.5 sm:pr-2 md:pr-4">
+            <CopyableCa
+              compact
+              className="btn-lift btn-ghost !px-3.5 !py-2.5 [&_span]:!text-white/70"
             />
-            <span className="text-black font-bold tracking-tight text-lg">Prey</span>
-          </Link>
-
-          <nav className="hidden xl:flex items-center gap-4 min-w-0">
-            {actionLinks.map((l) => (
-              <NavLink key={l.to} to={l.to} end={l.end} className={linkClass}>
-                {l.label}
-                {l.badge ? (
-                  <span className="ml-1 rounded-full bg-hood-deep px-1.5 py-0.5 text-[10px] font-semibold text-ember">
-                    {l.badge}
-                  </span>
-                ) : null}
-              </NavLink>
-            ))}
-            <span className="h-4 w-px bg-hood-deep/25" />
-            {explainLinks.map((l) => (
-              <NavLink key={l.to} to={l.to} className={linkClass}>
-                {l.label}
-              </NavLink>
-            ))}
-          </nav>
-
-          <div className="ml-auto flex items-center gap-2 shrink-0">
-            <CopyableCa className="btn-lift hidden sm:inline-flex !border-black/30 !bg-black/10 !text-black hover:!bg-black/20 hover:!text-black [&_span]:!text-black/60" />
             {short ? (
               <button
                 type="button"
                 onClick={disconnect}
-                className="btn-lift rounded-full border border-black/35 bg-black/10 px-3 py-1.5 text-sm text-black font-mono font-semibold hover:bg-black/20"
+                className="btn-lift btn-ghost hidden rounded-full px-3.5 py-2.5 text-sm font-mono font-semibold sm:inline-flex"
                 title={`Disconnect ${walletId ?? 'wallet'}`}
               >
                 {short}
@@ -77,34 +86,30 @@ export function Chrome() {
                 type="button"
                 onClick={openConnect}
                 disabled={connecting}
-                className="btn-lift rounded-full bg-black px-4 py-1.5 text-sm font-semibold text-ember hover:bg-neutral-950 disabled:opacity-60"
+                className="btn-lift btn-solid inline-flex rounded-full px-3.5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] disabled:opacity-60 sm:px-4 sm:text-[13px]"
               >
-                Connect
+                {connecting ? '…' : 'Connect'}
               </button>
             )}
-            <Link
-              to="/treasury"
-              className="btn-lift hidden md:inline-flex rounded-full border-2 border-black bg-transparent px-4 py-1.5 text-sm font-semibold text-black hover:bg-black hover:text-ember"
-            >
-              Get rewards
-            </Link>
           </div>
         </div>
 
-        <nav className="xl:hidden flex gap-3 overflow-x-auto border-t border-hood-deep/10 px-4 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {[...actionLinks, ...explainLinks].map((l) => (
-            <NavLink key={l.to} to={l.to} end={l.end} className={linkClass}>
+        <nav className="sm:hidden flex justify-center gap-4 px-4 pb-3">
+          {[...leftLinks, ...rightLinks].map((l) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.end}
+              className={({ isActive }) =>
+                `${notchLinkClass({ isActive })} ${l.accent ? '!text-ember' : ''}`
+              }
+            >
               {l.label}
             </NavLink>
           ))}
         </nav>
-
-        {error && !short ? (
-          <p className="border-t border-red-500/30 bg-red-500/15 px-4 py-2 text-xs text-red-800">
-            {error}
-          </p>
-        ) : null}
       </header>
+      {!isHome ? <div className="h-[96px] max-sm:h-[8rem]" aria-hidden /> : null}
       <ConnectModal />
     </>
   )

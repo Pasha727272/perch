@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Official Robinhood green #CCFF00 — dark ink for text/buttons on neon surfaces */
-  --color-ember: #ccff00;
-  --color-ember-bright: #d9ff33;
-  --color-hood: #ccff00;
-  --color-hood-deep: #000000;
-  --color-bone: #e8e2d6;
-  --color-salad: #e4efdf;
+  /* Black + lime desk palette */
+  --color-ember: #d1ff00;
+  --color-ember-bright: #e8ff66;
+  --color-hood: #d1ff00;
+  --color-hood-deep: #050805;
+  --color-bone: #eef2e6;
+  --color-sky: #9bb08a;
+  --color-night: #050805;
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Instrument Serif", Georgia, serif;
+  --font-display: "Fraunces", Georgia, serif;
 }
 
 html,
@@ -18,7 +19,7 @@ body,
 #root {
   margin: 0;
   min-height: 100%;
-  background: #050505;
+  background: #050805;
   color: #fff;
   font-family: var(--font-sans);
 }
@@ -28,27 +29,240 @@ body {
 }
 
 .btn-lift {
+  position: relative;
   transition:
-    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s ease,
     background-color 0.2s ease,
     border-color 0.2s ease,
     color 0.2s ease,
-    box-shadow 0.22s ease;
+    filter 0.2s ease;
   will-change: transform;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.28),
+    0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.btn-lift:hover {
-  transform: scale(1.045);
+.btn-lift:hover:not(:disabled) {
+  transform: scale(1.03);
+  filter: brightness(1.04);
 }
 
-.btn-lift:active {
+.btn-lift:active:not(:disabled) {
   transform: scale(0.985);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
-/* Page scrollbar — thin, dark track, Robinhood green thumb */
+.btn-solid {
+  background: linear-gradient(180deg, #e8ff66 0%, #d1ff00 55%, #a8cc00 100%);
+  color: #050805;
+  border: 1px solid rgba(209, 255, 0, 0.65);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18),
+    0 6px 18px rgba(209, 255, 0, 0.35),
+    0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-solid:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.btn-ghost {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.06) 100%);
+}
+
+.btn-chip-on {
+  background: linear-gradient(180deg, #e8ff66 0%, #d1ff00 100%);
+  color: #050805;
+  border: 1px solid rgba(209, 255, 0, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 3px 10px rgba(209, 255, 0, 0.3);
+}
+
+.btn-chip-off {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.alt-stem {
+  transform-origin: bottom center;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.35s ease;
+}
+
+.alt-bar {
+  transition:
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+}
+
+.alt-bar-dark {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.35),
+    0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.alt-bar-max {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18),
+    0 8px 20px rgba(209, 255, 0, 0.4);
+}
+
+.alt-col:hover .alt-stem {
+  transform: translateY(-12px) scale(1.06);
+  filter: brightness(1.05);
+}
+
+.alt-col:hover .alt-bar-dark {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 14px 30px rgba(0, 0, 0, 0.38);
+}
+
+.alt-col:hover .alt-bar-max {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 16px 34px rgba(209, 255, 0, 0.55),
+    0 0 28px rgba(232, 255, 102, 0.4);
+}
+
+.alt-mult {
+  position: relative;
+  z-index: 2;
+  transition: color 0.25s ease;
+}
+
+.alt-col:hover .alt-mult {
+  color: #050805;
+}
+
+.dawn-hero {
+  background: #050805;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(36px) scale(0.985);
+  filter: blur(4px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.75s ease;
+}
+
+.reveal-on {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+
+.marquee-track {
+  display: inline-flex;
+  width: max-content;
+  animation: marquee-scroll 48s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.live-frame {
+  position: relative;
+  border: 1px solid rgba(209, 255, 0, 0.28);
+  background:
+    linear-gradient(180deg, rgba(209, 255, 0, 0.06), transparent 40%),
+    rgba(255, 255, 255, 0.02);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.live-frame::before,
+.live-frame::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: #d1ff00;
+  border-style: solid;
+  pointer-events: none;
+}
+
+.live-frame::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.live-frame::after {
+  right: -1px;
+  bottom: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+.fee-frame {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(209, 255, 0, 0.08), transparent 55%),
+    rgba(255, 255, 255, 0.025);
+  box-shadow:
+    0 0 0 1px rgba(209, 255, 0, 0.08),
+    0 24px 60px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.fee-frame::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1px dashed rgba(209, 255, 0, 0.18);
+  border-radius: 18px;
+  pointer-events: none;
+}
+
 * {
   scrollbar-width: thin;
-  scrollbar-color: #ccff00 #141414;
+  scrollbar-color: #d1ff00 #121820;
 }
 
 *::-webkit-scrollbar {
@@ -57,53 +271,20 @@ body {
 }
 
 *::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: #0a1010;
   border-left: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #ccff00;
+  background: linear-gradient(180deg, #e8ff66, #d1ff00);
   border-radius: 999px;
-  border: 2px solid #0a0a0a;
+  border: 2px solid #0a1010;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: #d9ff33;
+  background: #e8ff66;
 }
 
 *::-webkit-scrollbar-corner {
-  background: #0a0a0a;
-}
-
-@keyframes prey-float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-2deg);
-  }
-  50% {
-    transform: translateY(-18px) rotate(2.5deg);
-  }
-}
-
-@keyframes prey-glow {
-  0%,
-  100% {
-    filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.22));
-  }
-  50% {
-    filter: drop-shadow(0 28px 40px rgba(0, 0, 0, 0.18)) drop-shadow(0 0 28px rgba(204, 255, 0, 0.35));
-  }
-}
-
-.prey-letter-float {
-  animation:
-    prey-float 5.5s ease-in-out infinite,
-    prey-glow 5.5s ease-in-out infinite;
-  will-change: transform, filter;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .prey-letter-float {
-    animation: none;
-  }
+  background: #0a1010;
 }

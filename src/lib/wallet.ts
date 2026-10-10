@@ -97,7 +97,7 @@ export function walletInstalled(id: WalletId) {
 
 const INSTALL: Record<WalletId, string> = {
   phantom: 'https://phantom.com/download',
-  robinhood: 'https://robinhood.com/us/en/crypto/wallet/',
+  robinhood: 'https://solflare.com/download',
 }
 
 async function ensureRobinhoodChain(provider: EthereumProvider) {
@@ -142,7 +142,7 @@ export async function connectWallet(id: WalletId): Promise<{
     throw new Error(
       id === 'phantom'
         ? 'Phantom not found — install the extension'
-        : 'No EVM wallet found — install Robinhood Wallet or MetaMask',
+        : 'Wallet not found. Install Phantom or Solflare',
     )
   }
 

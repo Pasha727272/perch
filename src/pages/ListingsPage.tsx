@@ -1,53 +1,41 @@
-import { Crosshair, FileText, Shield, Fingerprint } from 'lucide-react'
+import { ECONOMICS, ROBINHOOD_CHAIN } from '../config'
 
-const PILLARS = [
-  {
-    icon: Crosshair,
-    title: 'Execution',
-    q: 'Can we buy it in the size we need?',
-    body: 'Test-buys on a forked mainnet with real order size. If price impact blows the slippage budget, the asset is rejected. Reported pool depth is ignored — only execution matters.',
-  },
-  {
-    icon: FileText,
-    title: 'Pricing',
-    q: 'Can we price it without trusting the pool?',
-    body: 'Stock tokens need an official oracle feed. Memes use on-chain VWAP from a keeper. No reliable price → no listing.',
-  },
-  {
-    icon: Shield,
-    title: 'Token risk',
-    q: 'Will it still be yours tomorrow?',
-    body: 'Reject mint / blacklist / transfer tax / pause. LP locked or burned. Real sell simulation on a fork. Concentration and history checked. Issuer powers allowed only for official stock tokens.',
-  },
-  {
-    icon: Fingerprint,
-    title: 'Identity',
-    q: 'Is it really the right contract?',
-    body: 'Assets are identified by Robinhood Chain contract address only. Tickers are ignored — spoof names do not list.',
-  },
+const ROWS = [
+  { venue: 'Solana DEX', pair: ECONOMICS.pair, status: 'Primary', note: 'Execution and settlement' },
+  { venue: 'Nest escrow', pair: 'SOL fees', status: 'Live stub', note: 'Payouts at the threshold' },
+  { venue: 'Altitude vault', pair: ECONOMICS.ticker, status: 'Live stub', note: 'Tier upgrades' },
 ]
 
 export default function ListingsPage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 lg:px-6">
-      <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
-        How an asset gets listed
-      </h1>
-      <p className="mt-4 max-w-2xl text-sm text-white/55 leading-relaxed">
-        We do not list coins for a brochure. Fee share buys for hunters must actually execute. Four
-        hard pillars — fail one, stay dark.
+    <div className="mx-auto max-w-4xl px-6 py-12">
+      <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">Listings</h1>
+      <p className="mt-3 text-white/55 text-sm md:text-base leading-relaxed">
+        Where {ECONOMICS.ticker} and the Nest rails show up on {ROBINHOOD_CHAIN.name}. Honest stubs
+        until mainnet addresses.
       </p>
 
-      <h2 className="mt-12 text-sm uppercase tracking-widest text-white/40">The review</h2>
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        {PILLARS.map(({ icon: Icon, title, q, body }) => (
-          <article key={title} className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-            <Icon className="text-ember mb-3" size={20} />
-            <h3 className="text-lg font-semibold text-ember">{title}</h3>
-            <p className="mt-2 text-sm font-medium text-white/80">{q}</p>
-            <p className="mt-3 text-sm text-white/45 leading-relaxed">{body}</p>
-          </article>
-        ))}
+      <div className="mt-10 overflow-x-auto rounded-2xl border border-white/10">
+        <table className="w-full min-w-[560px] text-left text-sm">
+          <thead className="bg-white/[0.04] text-[11px] uppercase tracking-[0.12em] text-white/40">
+            <tr>
+              <th className="px-4 py-3">Venue</th>
+              <th className="px-4 py-3">Pair / asset</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Note</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/8">
+            {ROWS.map((r) => (
+              <tr key={r.venue} className="hover:bg-white/[0.03]">
+                <td className="px-4 py-3 font-semibold">{r.venue}</td>
+                <td className="px-4 py-3 font-mono text-white/70">{r.pair}</td>
+                <td className="px-4 py-3 text-ember">{r.status}</td>
+                <td className="px-4 py-3 text-white/45">{r.note}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

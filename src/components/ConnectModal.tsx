@@ -10,12 +10,6 @@ const WALLETS: { id: WalletId; name: string; hint: string; icon: string }[] = [
     hint: 'Browser extension',
     icon: '/wallets/phantom.png',
   },
-  {
-    id: 'robinhood',
-    name: 'Robinhood',
-    hint: 'Wallet or any EVM → Chain',
-    icon: '/wallets/robinhood.png',
-  },
 ]
 
 export function ConnectModal() {
@@ -59,7 +53,7 @@ export function ConnectModal() {
             <X size={18} />
           </button>
         </div>
-        <p className="mb-5 text-xs text-white/40">Phantom or Robinhood · Robinhood Chain</p>
+        <p className="mb-5 text-xs text-white/40">Phantom · Solana</p>
 
         <div className="space-y-2" key={tick}>
           {WALLETS.map((w) => {
@@ -80,11 +74,8 @@ export function ConnectModal() {
                 <span className="flex-1 min-w-0">
                   <span className="block text-sm font-semibold text-white">{w.name}</span>
                   <span className="block text-xs text-white/40">
-                    {ready ? w.hint : 'Tap to install'}
+                    {ready ? w.hint : 'Click to install'}
                   </span>
-                </span>
-                <span className="text-xs font-medium text-ember">
-                  {connecting ? '…' : ready ? 'Connect' : 'Install'}
                 </span>
               </button>
             )
